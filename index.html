@@ -8,56 +8,87 @@
 <body>
     <header></header>
     <main>
-        <div class="wrapper" id="mainXXX"></div>
+        <div class="wrapper" id="main"></div>
     </main>
     <footer></footer>
     <script>
-        keys ={
+        //1.初始化数据
+        var keys ={
             0: ['q','w','e','r','t','y','u','i','o','p'],
             1: ['a','s','d','f','g','h','j','k','l'],
             2: ['z','x','c','v','b','n','m'],
             length: 3
         }
-        hash={q:'qq.com',w:'weibo.com',e:'ele.com',r:'renren.com',t:'tianya.cn',y:'youtube.com',u:'uc.cn',i:'iqiyi.com',o:'opera.com',p:undefined,a:'acfun.cn',b:'bilibili.com',s:'sohu.com',z:'zhihu.com',m:'meituan.com'
+        var hash={q:'www.qq.com',w:'www.weibo.com',e:'www.ele.com',y:'www.youtube.com',u:'uc.cn',i:'iqiyi.com',o:'opera.com',p:undefined,a:'acfun.cn',f:'huawei.com',l:'lenovo.com',b:'bilibili.com',n:'nubia.com',s:'samsung.com',z:'zhihu.com',m:'mi.com'
         }
         //取出 localStorage 中的zzz对应的hash
-        hashInlocalStorage = JSON.parse(localStorage.getItem('zzz') || 'null')
+        var hashInlocalStorage = JSON.parse(localStorage.getItem('zzz') || 'null')
         if(hashInlocalStorage){
-            hash=hashInlocalStorage
+            hash = hashInlocalStorage
         }
+         
+
+        //2.生成键盘
         //便利keys,生成kbd标签 
-        index = 0
-        while(index< keys['length']){
-        divXXX = document.createElement('div')
-        mainXXX.appendChild(divXXX)
-        index2 = 0
-        row =keys[index] //第一个数组 第二个数组 第三个数组
+        var index = 0
+        while(index < keys['length']){
+        var div = document.createElement('div')
+        div.className = 'row'
+        main.appendChild(div)
+        var row = keys[index] //第一个数组 第二个数组 第三个数组
         index = index+1
+        /*------------------------------------------------*/
+        var index2 = 0
         while(index2< row['length']){
-            kbdXXX = document.createElement('kbd')
-            kbdXXX.textContent = row[index2]
-            buttonX=document.createElement('button')
-            buttonX.textContent = '编辑'
-            buttonX.id=row[index2]
-            buttonX.onclick=function(xzkjcnxlkcjlk){
-                //xzkjcnxlkcjlk.target就是用户点击的元素
-                key=xzkjcnxlkcjlk.target.id// q w e r t
-                x = prompt('输入网址')// qq.com
-                hash[key]=x// hash 变更
-                localStorage.setItem('zzz',JSON.stringify(hash))
-                console.log(hash)
+            var  kbd = document.createElement('kbd')
+            var span = document.createElement('span')
+            span.textContent = row[index2]
+            span.className = 'text'
+            kbd.appendChild(span)
+            kbd.className = 'key'
+            var button = document.createElement('button')
+            button.textContent = '编辑'
+            button.className = 'button'
+            button.id = row[index2]
+            var img = document.createElement('img')
+            if(hash[row[index2]]){
+                img.src = 'http://' + hash[row[index2]] + '/favicon.ico'                
+            }else{
+                img.src = '//i.loli.net/2019/03/17/5c8e290af369a.png'
             }
-            kbdXXX.appendChild(buttonX)
-            divXXX.appendChild(kbdXXX)
+            img.onerror = function(xxx){
+                xxx.target.src = '//i.loli.net/2019/03/17/5c8e290af369a.png'
+            }
+            button.onclick = function(xzkjcnxlkcjlk){
+                //xzkjcnxlkcjlk.target就是用户点击的元素
+                var button2 = xzkjcnxlkcjlk['target']
+                var img2 = button2.previousSibling
+                var key = button2['id']
+                var x = prompt('输入网址')// qq.com
+                hash[key] = x// hash 变更
+                img2.src = 'http://' + x + '/favicon.ico'
+                img.onerror = function(xxx){
+                    xxx.target.src = '//i.loli.net/2019/03/17/5c8e290af369a.png'
+            }
+                //将变量存到浏览器
+                localStorage.setItem('zzz',JSON.stringify(hash))
+            }
+            kbd.appendChild(img)
+            kbd.appendChild(button)
+            div.appendChild(kbd)
             index2 =index2 + 1
         }
+        index = index+1
+    }
+
+    //3.监听键盘
         document.onkeypress = function(xzkjcnxlkcjlk){
-            key = xzkjcnxlkcjlk['key']
-            website = hash[key]
+            var key = xzkjcnxlkcjlk['key']
+            var website = hash[key]
             //location.href = 'http://'+website
             window.open('http://'+website, '_blank')
         }
-        }
+        
     </script>
 </body>
 </html>
